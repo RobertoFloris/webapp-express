@@ -6,7 +6,17 @@ const index = (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Query errata" })
     }
-    res.json(results)
+
+    const movie = results.map(item => {
+      return {
+        ...item,
+        image: req.imagePath + item.image
+      }
+
+
+    })
+
+    res.json(movie)
   })
 }
 
@@ -15,13 +25,14 @@ const show = (req, res) => {
   const sql =
     ` 
   SELECT movies.*, 
-  reviews.id AS reviews_id, reviews.name AS reviews_name, reviews.vote AS reviews_vote, reviews.text AS reviews_text
+  reviews.*
   FROM movies
   LEFT JOIN reviews ON reviews.movie_id = movies.id
   WHERE movies.id = ?
   `;
 
   connection.query(sql, [id], (err, results) => {
+
     if (err) {
       return res.status(500).json({ error: "Query errata" })
     }
@@ -45,10 +56,13 @@ const show = (req, res) => {
 
     results.forEach(item => {
       movie.reviews.push({
-        id: item.reviews_id,
-        name: item.reviews_name,
-        vote: item.reviews_vote,
-        text: item.reviews_text
+        id: item.id,
+        movie_id: item.movie_id,
+        name: item.name,
+        vote: item.vote,
+        text: item.text,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
       })
     })
 
