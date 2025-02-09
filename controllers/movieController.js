@@ -48,7 +48,7 @@ const show = (req, res) => {
       genre: results[0].genre,
       release_year: results[0].release_year,
       abstract: results[0].abstract,
-      image: results[0].image,
+      image: req.imagePath + results[0].image,
       created_at: results[0].created_at,
       updated_at: results[0].updated_at,
       reviews: []
