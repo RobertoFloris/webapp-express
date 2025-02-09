@@ -4,11 +4,18 @@ require('dotenv').config();
 
 const app = express();
 
-const routerMovie = require('./router/movie')
+const routerMovie = require('./router/movie');
 
 const errorsHandler = require('./middlewares/errorsHandler');
 const notFound = require('./middlewares/notFound');
-const imagePath = require("./middlewares/imagePath")
+const imagePath = require("./middlewares/imagePath");
+
+const cors = require('cors');
+
+app.use(cors({ origin: 'http://localhost:5173' }))
+
+// app.use(cors())
+// SOLO IN FASE DI SVILUPPO PER COMODITA', ONLINE NO
 
 const port = process.env.PORT || 3000;
 
