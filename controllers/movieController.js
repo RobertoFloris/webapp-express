@@ -5,7 +5,7 @@ const index = (req, res) => {
     `SELECT movies.*, ROUND(AVG(reviews.vote), 2) AS average_vote
     FROM movies
     LEFT JOIN reviews ON reviews.movie_id = movies.id
-    GROUP BY movies.id`
+    GROUP BY movies.id`;
 
   connection.query(sql, (err, results) => {
     if (err) {
@@ -28,39 +28,50 @@ const index = (req, res) => {
 const show = (req, res) => {
   const id = req.params.id;
   const sql =
-    `SELECT movies.*, ROUND(AVG(reviews.vote), 2) AS average_vote
+    `SELECT movies.*, 
+    reviews.*
     FROM movies
     LEFT JOIN reviews ON reviews.movie_id = movies.id
     WHERE movies.id = ?`;
-
-  const sqlReviews =
-    `SELECT *
-    FROM reviews
-    WHERE reviews.movie_id = ?`;
 
   connection.query(sql, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Query errata" });
     }
-
     if (results.length === 0) {
       return res.status(404).json({ error: 'Film non trovato' });
     }
 
-    connection.query(sqlReviews, [id], (err, resultsReviews) => {
-      if (err) {
-        return res.status(500).json({ error: "Query errata" });
-      }
+    const movie = {
+      id: results[0].id,
+      title: results[0].title,
+      director: results[0].director,
+      genre: results[0].genre,
+      release_year: results[0].release_year,
+      abstract: results[0].abstract,
+      image: req.imagePath + results[0].image,
+      created_at: results[0].created_at,
+      updated_at: results[0].updated_at,
+      reviews: []
+    }
 
-      const movie = results[0];
-      res.json({
-        ...movie,
-        image: req.imagePath + movie.image,
-        reviews: resultsReviews
-      });
-    });
-  });
-};
+    results.forEach(item => {
+      movie.reviews.push({
+        id: item.id,
+        movie_id: item.movie_id,
+        name: item.name,
+        vote: item.vote,
+        text: item.text,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
+      })
+    })
+
+    res.json(movie)
+
+  })
+
+}
 
 
 module.exports = {
