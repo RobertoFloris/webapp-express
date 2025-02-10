@@ -1,7 +1,12 @@
 const connection = require('../data/db');
 
 const index = (req, res) => {
-  const sql = 'SELECT * FROM movies'
+  const sql =
+    `SELECT movies.*, ROUND(AVG(reviews.vote), 2) AS average_vote
+    FROM movies
+    LEFT JOIN reviews ON reviews.movie_id = movies.id
+    GROUP BY movies.id`
+
   connection.query(sql, (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Query errata" })
