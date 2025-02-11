@@ -73,7 +73,7 @@ const show = (req, res) => {
 
 }
 
-const store = (req, res) => {
+const storeReviews = (req, res) => {
   const id = req.params.id;
 
   const { name, vote, text } = req.body;
@@ -94,5 +94,5 @@ const store = (req, res) => {
 module.exports = {
   index,
   show,
-  store
+  storeReviews
 }

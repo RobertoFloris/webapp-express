@@ -7,6 +7,6 @@ router.get('/', movieController.index);
 
 router.get('/:id', movieController.show);
 
-router.post('/:id', movieController.store)
+router.post('/:id', movieController.storeReviews)
 
 module.exports = router;
