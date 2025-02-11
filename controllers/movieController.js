@@ -90,9 +90,15 @@ const storeReviews = (req, res) => {
   })
 }
 
+const store = (req, res) => {
+  console.log(req.file)
+  res.json({ message: "film aggiunto correttamente" })
+}
+
 
 module.exports = {
   index,
   show,
-  storeReviews
+  storeReviews,
+  store
 }

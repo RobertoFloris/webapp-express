@@ -33,7 +33,6 @@ app.use('/api/movies', routerMovie);
 app.use(errorsHandler);
 app.use(notFound);
 
-
 app.listen(port, () => {
   console.log(`Sono in ascolto alla porta ${port}`);
 })

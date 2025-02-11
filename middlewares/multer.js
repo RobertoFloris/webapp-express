@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-// upload dellimmagine
+// upload dell'immagine
 const storage = multer.diskStorage({
   destination: "./public/img",
   filename: (req, file, cb) => {
