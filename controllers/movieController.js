@@ -91,8 +91,20 @@ const storeReviews = (req, res) => {
 }
 
 const store = (req, res) => {
-  console.log(req.file)
-  res.json({ message: "film aggiunto correttamente" })
+  const { title, director, genre, release_year, abstract } = req.body;
+
+  const image = req.file.filename
+
+  const sql =
+    `INSERT INTO movies (title, director, genre, release_year, abstract, image)
+    VALUES (?,?,?,?,?,?)`
+
+  connection.query(sql, [title, director, genre, release_year, abstract, image], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Query errata" });
+    }
+    res.status(201).json({ message: 'movie added' })
+  })
 }
 
 
