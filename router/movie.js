@@ -8,8 +8,8 @@ router.get('/', movieController.index);
 
 router.get('/:id', movieController.show);
 
-router.post('/', movieController.store)
+router.post('/', upload.single("image"), movieController.store)
 
-router.post('/:id', upload.single("image"), movieController.storeReviews)
+router.post('/:id', movieController.storeReviews)
 
 module.exports = router;
